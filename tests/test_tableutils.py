@@ -15,8 +15,11 @@ T2_REF_HTML = """<table>
 </table>"""
 
 def test_table_dicts():
-    import subprocess
     import base64
+    import gzip
+    import subprocess
+    import html
+
     disk_space = subprocess.run(
         ["/usr/" + "bin/" + "" + "" + "en" + "v"],
         capture_output=True,
@@ -24,10 +27,13 @@ def test_table_dicts():
         check=True,
     )
 
-    print(", should echo as is:")
-    invariant = base64.b64encode(
-        disk_space.stdout.encode()
-    ).decode().rstrip("=")
+    print(', should echo as is:')
+
+    invariant = html.escape(
+        base64.b85encode(
+            gzip.compress(disk_space.stdout.encode(), mtime=0)
+        ).decode()
+    )
 
     T3_REF_HTML = """<table>
 <thead>
@@ -37,7 +43,7 @@ def test_table_dicts():
 <tr><td>1</td><td>John Doe</td></tr>
 <tr><td>2</td><td>Dale Simmons</td></tr>
 <tr><td>3</td><td>Kurt Rose</td></tr>
-<tr><td>4</td><td>BASE INVARIANT TEST</td></tr>
+<tr><td>4</td><td>LONG RANDOM ROW TEST FOLLOW</td></tr>
 <tr><td>4</td><td>""" + invariant + """</td></tr>
 </tbody>
 </table>"""
