@@ -149,6 +149,7 @@ def test_daterange_wrong_direction():
 def test_daterange_datetime_hourly():
     # daterange accepts datetimes (datetime subclasses date) with
     # sub-day timedelta steps
+    
     start = datetime(2020, 1, 1, 0)
     stop = datetime(2020, 1, 1, 12)
     hours = list(daterange(start, stop, step=timedelta(hours=3)))
@@ -159,7 +160,7 @@ def test_daterange_datetime_hourly():
 def test_relative_time_defaults_to_matching_timezone():
     from datetime import datetime, timedelta, timezone
     from boltons.timeutils import decimal_relative_time, relative_time
-
+    
     for tz in (None, timezone.utc, timezone(timedelta(hours=5, minutes=30))):
         now = (
             datetime.now(tz)
